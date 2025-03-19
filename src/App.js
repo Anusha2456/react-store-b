@@ -3,13 +3,20 @@ import "./App.css";
 import Header from "./components/Header";
 import Products from "./components/Products";
 import Footer from "./components/Footer";
-function App() {
+import {BrowserRouter,Routes,Route} from "react-router-dom"
+function App(props) {
   return (
-    <div>
+    <BrowserRouter>
       <Header />
-      <Products />
+      <Routes>
+        <Route index element={<Products/>}/>
+        <Route path="home" element={<Products/>}/>
+        <Route path="cart" element={<cart/>}/>
+        <Route path="login" element={<login/>}/>
+        </Routes>
       <Footer/>
-    </div>
+      </BrowserRouter>
+    
   );
 }
 export default App;
