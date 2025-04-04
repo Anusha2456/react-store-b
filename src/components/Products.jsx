@@ -1,24 +1,41 @@
-import "./Products.css"
+import React from "react";
+import "./Products.css";
+import { appContext } from "../App";
+import { useContext } from "react";
 export default function Products() {
-  const products = [
-    { id: 1, name: "Product 1", price: 30 },
-    { id: 2, name: "Product 2", price: 40 },
-    { id: 3, name: "Product 3", price: 45 },
-    { id: 4, name: "Product 4", price: 95 },
-    { id: 5, name: "Product 5", price: 70 },
-    { id: 6, name: "Product 6", price: 25 },
-  ];
+  const { user, products, cart, setCart } = useContext(appContext);
+  const addToCart = (id) => {
+    !cart[id] && setCart({ ...cart, [id]: 1 });
+  };
+  const increment = (id) => {
+    setCart({ ...cart, [id]: cart[id] + 1 });
+  };
+  const decrement = (id) => {
+    setCart({ ...cart, [id]: cart[id] - 1 });
+  };
   return (
-    <div>
+    <>
+      <h3>{user.name}</h3>
       <div className="App-Products-Row">
         {products.map((value, index) => (
-          <div className="App-Products-Box" key={index}>
+          <div key={index} className="App-Products-Box">
+            <img src={value.imgUrl} />
             <h3>{value.name}</h3>
+            <p>{value.desc}</p>
             <h4>{value.price}</h4>
-            <button>Add to Cart</button>
-            </div>
+            {cart[value.id] > 0 ? (
+              <div>
+                <button onClick={() => decrement(value.id)}>-</button>
+                {cart[value.id]}
+                <button onClick={() => increment(value.id)}>+</button>
+              </div>
+            ) : (
+              <button onClick={() => addToCart(value.id)}>Add to Cart</button>
+            )}
+          </div>
         ))}
       </div>
-    </div>
+      ;
+    </>
   );
 }
